@@ -18,37 +18,29 @@ namespace TCPClient
         {
             try
             {
+                //TCP establish connection via its socket through request to server
                 using (_clientSocket=new TcpClient("127.0.0.1", 7))
                 {
                     using (stream = _clientSocket.GetStream())
                     {
-                        while (true)
+                        while(true)
                         {
-                            Writer = new StreamWriter(stream) { AutoFlush = true };
-                           
+                            // Data will be flushed from the buffer to the stream after each write operation
+                            Writer = new StreamWriter(stream) {AutoFlush = true};
+                            Console.WriteLine("Client ready to send request to server...");
                             Console.WriteLine("Write your request here ");
                             string clientMsg = Console.ReadLine();
-
+                            // client is ready to send data which has collected through user input
                             Writer.WriteLine(clientMsg);
+                        }
 
-                            Reader = new StreamReader(stream);
-                            string rdMsgFromServer = Reader.ReadLine();
-                            if (rdMsgFromServer != null)
-                            {
-                                Console.WriteLine("Client recieved Message from Server:" + rdMsgFromServer);
-                            }
-                            else
-                            {
-                                Console.WriteLine("Client recieved null message from Server ");
-                            }
-                            Console.WriteLine("Press enter to stop the client!");
-                            Console.ReadKey();
                         }
                     }
-                }
+        
+            }
             
 
-            }
+           
             catch (Exception e)
             {
                 Console.WriteLine(e);
